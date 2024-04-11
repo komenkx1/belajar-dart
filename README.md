@@ -1,5 +1,5 @@
 # Belajar Flutter
 
 - Git Clone
-- flutter install
+- flutter pub get
 - flutter run
