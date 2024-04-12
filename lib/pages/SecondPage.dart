@@ -11,11 +11,49 @@ class SecondPage extends StatefulWidget {
 }
 
 class _SecondPageState extends State<SecondPage> {
-  List<User> userList = [];
+  List<User> userList = [
+    // object json di convert agar dikenali sebaai object user
+    User.fromJson({
+      'id': 1,
+      'name': 'Mang',
+      'address': 'Gianyar',
+      'gender': 'Pria',
+    }),
+    // ada cara lain nya yaitu langsung menggunakan model usernya.
+    User(
+      id: 2,
+      name: "Mang2",
+      address: "Gianyar2",
+      gender: "Pria2",
+    ),
+  ];
 
-  void addUser() {}
+  /*
+  perbedaan 2 metode di atas adalah, cara dengan fromJson, cocok ketika ada data yg butuh pemrosesan, 
+  contohnya data dari api memiliki field yg belum sesuai dengan object model user, maka pakai fromJson untuk memfilter
+  field feild apa saja yg sesuai dengan model.
 
-  void removeUser(index) {}
+  cara kedua itu cocok kalau datanya sudah sesuai dari awal.
+  */
+  int idUser = 3;
+  void addUser() {
+    int counterId = idUser++;
+    var newUser = User(
+      id: counterId,
+      name: "Mang ${counterId}",
+      address: "Gianyar ${counterId}",
+      gender: "Pria ${counterId}",
+    );
+    setState(() {
+      userList.add(newUser);
+    });
+  }
+
+  void removeUser(index) {
+    setState(() {
+      userList.removeAt(index);
+    });
+  }
 
   @override
   void initState() {
