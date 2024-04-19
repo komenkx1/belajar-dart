@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/CInput.dart';
+import 'package:flutter_application_1/pages/FivePage.dart';
 import 'package:flutter_application_1/pages/SecondPage.dart';
 import 'package:flutter_application_1/pages/ThirdPage.dart';
 
@@ -42,6 +43,14 @@ class HomePage extends StatelessWidget {
                     }))
                   },
               child: const Text("Go To Third Page")),
+          ElevatedButton(
+              onPressed: () => {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return FivePage();
+                    }))
+                  },
+              child: const Text("Go To Five Page")),
           ElevatedButton(
               onPressed: () => addCounter(),
               child: const Text("Tambah Counter"))
