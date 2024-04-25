@@ -28,7 +28,13 @@ class _FourPageState extends State<FourPage> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(widget.doneModuleList[index]),
-            trailing: IconButton(icon: Icon(Icons.delete), onPressed: null),
+            trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  setState(() {
+                    widget.doneModuleList.removeAt(index);
+                  });
+                }),
           );
         },
         itemCount: widget.doneModuleList.length,
