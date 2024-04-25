@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controllers/UserController.dart';
 import 'package:flutter_application_1/models/User.dart';
+import 'package:flutter_application_1/pages/SixPage.dart';
+import 'package:get/get.dart';
 
 class FivePage extends StatefulWidget {
   const FivePage({super.key});
@@ -10,45 +13,19 @@ class FivePage extends StatefulWidget {
 }
 
 class _FivePageState extends State<FivePage> {
-  final dio = Dio();
-  List<User> users = [];
-  bool isLoading = false;
-  void getUser() async {
-    isLoading = true;
-    final response = await dio.get('https://jsonplaceholder.org/users');
-    // Periksa status response
-    if (response.statusCode == 200) {
-      users = (response.data as List)
-          .map((userJson) => User.fromJson({
-                "id": userJson["id"],
-                "name": userJson["firstname"],
-                "address": userJson["address"]["city"],
-                "gender": "ee"
-              }))
-          .toList();
-      // Gunakan list<User>
-      setState(() {
-        isLoading = false;
-      });
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-      // Terjadi kesalahan saat mengambil data
-      print('Terjadi kesalahan: ${response.statusCode}');
-    }
-  }
+  final UserController userController = Get.put(UserController());
 
   @override
   void initState() {
-    getUser();
     super.initState();
+    userController.getUsers();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoading
+        body: Obx(
+      () => userController.isLoading.value
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -58,9 +35,9 @@ class _FivePageState extends State<FivePage> {
                   // Tambahkan Expanded di sini biar list view tau batasan sampai mana harus menentukan heighnya
                   child: Container(
                     child: ListView.builder(
-                      itemCount: users.length,
+                      itemCount: userController.userList.value.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final User user = users[index];
+                        final User user = userController.userList.value[index];
                         return Padding(
                           padding: EdgeInsets.all(10),
                           child: ListTile(
@@ -74,7 +51,9 @@ class _FivePageState extends State<FivePage> {
                               onPressed: () => null,
                             ),
                             onTap: () {
-                              // Aksi yang ingin Anda lakukan ketika item diklik
+                              {
+                                Get.to(SixPage(userId: user.id ?? 0));
+                              }
                             },
                           ),
                         );
@@ -87,6 +66,6 @@ class _FivePageState extends State<FivePage> {
                 SizedBox(height: 10),
               ],
             ),
-    );
+    ));
   }
 }
